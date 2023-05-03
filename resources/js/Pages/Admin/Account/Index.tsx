@@ -4,12 +4,12 @@ import { confirmAlert } from 'react-confirm-alert';
 import route from 'ziggy-js';
 
 import AppLayout from '@/Layouts/DashboardAdminLayout';
-import { User } from '@/types';
 import { Inertia } from '@inertiajs/inertia';
 import { InertiaLink } from '@inertiajs/inertia-react';
+import { Account } from '@/Models/Account';
 
 interface Props {
-    accounts: Array<User>,
+    accounts: Array<Account>,
 }
 
 export default function Index(props: Props) {
