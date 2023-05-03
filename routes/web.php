@@ -3,10 +3,7 @@
 use App\Actions\Fortify\UserProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ResearchController;
-use App\Http\Controllers\ResearchDocumentController;
-use App\Http\Controllers\ResearchDocumentCategoryController;
-use App\Http\Controllers\ResearchTypeController;
+use App\Http\Controllers\AccountController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,6 +28,7 @@ Route::get('/', function () {
     ]);
 });
 
+Route::resource('/account', AccountController::class);
 
 Route::middleware([
     'auth:sanctum',
