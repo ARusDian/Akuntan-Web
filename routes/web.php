@@ -4,6 +4,7 @@ use App\Actions\Fortify\UserProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\SubAccountController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +30,7 @@ Route::get('/', function () {
 });
 
 Route::resource('/account', AccountController::class);
+Route::resource('/subaccount', SubAccountController::class);
 
 Route::middleware([
     'auth:sanctum',
