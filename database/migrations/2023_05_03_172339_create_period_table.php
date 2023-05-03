@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('period', function (Blueprint $table) {
+        Schema::create('periods', function (Blueprint $table) {
             $table->id();
             $table->date('start');
             $table->date('end');

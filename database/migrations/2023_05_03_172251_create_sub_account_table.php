@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_account', function (Blueprint $table) {
+        Schema::create('sub_accounts', function (Blueprint $table) {
             $table->string('id', 4)->primary();
             $table->string('name');
-            $table->string('account_id')->references('id')->on('account');
+            $table->string('account_id')->references('id')->on('accounts');
             $table->timestamps();
         });
     }
