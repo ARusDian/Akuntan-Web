@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sub_account', function (Blueprint $table) {
-            $table->string('code', 4)->primary();
+            $table->string('id', 4)->primary();
             $table->string('name');
             $table->foreignId('account_id')->constrained('account');
             $table->timestamps();
