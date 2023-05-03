@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transaction_journal', function (Blueprint $table) {
             $table->id();
             $table->foreignId('period_id')->constrained('period');
-            $table->foreignId('sub_account_id')->constrained('sub_account');
+            $table->string('sub_account_id')->references('id')->on('sub_account')->onUpdate('cascade')->onDelete('cascade');
             $table->string('description');
             $table->bigInteger('amount');
             $table->enum('type', ['debt', 'credit']);

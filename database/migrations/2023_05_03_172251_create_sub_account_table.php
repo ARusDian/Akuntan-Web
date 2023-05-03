@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sub_account', function (Blueprint $table) {
             $table->string('id', 4)->primary();
             $table->string('name');
-            $table->foreignId('account_id')->constrained('account');
+            $table->string('account_id')->references('id')->on('account');
             $table->timestamps();
         });
     }
