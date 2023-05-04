@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('sub_account_id')->references('id')->on('sub_accounts')->onUpdate('cascade')->onDelete('cascade');
             $table->string('description');
             $table->bigInteger('amount');
+            $table->date('date');
             $table->enum('type', ['debt', 'credit']);
             $table->timestamps();
         });
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaction_journal');
+        Schema::dropIfExists('transaction_journals');
     }
 };
