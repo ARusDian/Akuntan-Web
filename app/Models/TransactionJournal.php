@@ -12,23 +12,24 @@ class TransactionJournal extends Model
     protected $fillable = [
         'date',
         'description',
-        'amount',
         'sub_account_id',
         'period_id',
     ];
-
-    public function subAccount()
-    {
-        return $this->belongsTo(SubAccount::class);
-    }
 
     public function period()
     {
         return $this->belongsTo(Period::class);
     }
-    
-    public function account()
+
+    public function transactionJournalDetails()
     {
-        return $this->belongsToThrough(Account::class, SubAccount::class);
+        return $this->hasMany(TransactionJournalDetail::class);
     }
+
+    public function subAccount()
+    {
+        return $this->belongsToMany(SubAccount::class, TransactionJournalDetail::class);
+    }
+
+    
 }

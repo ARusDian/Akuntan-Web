@@ -23,13 +23,18 @@ class SubAccount extends Model
         return $this->belongsTo(Account::class);
     }
 
-    public function transactionJournals()
-    {
-        return $this->hasMany(TransactionJournal::class);
-    }
-
     public function period()
     {
         return $this->belongsTo(Period::class);
+    }
+
+    public function transactionJournalDetails()
+    {
+        return $this->hasMany(TransactionJournalDetail::class);
+    }
+
+    public function transactionJournals()
+    {
+        return $this->belongsToMany(TransactionJournal::class, TransactionJournalDetail::class);
     }
 }
