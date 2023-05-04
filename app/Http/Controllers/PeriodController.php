@@ -15,9 +15,9 @@ class PeriodController extends Controller
     public function index()
     {
         //
-        $period = Period::all();
+        $periods = Period::all();
         return Inertia::render('Admin/Period/Index', [
-            'period' => $period
+            'periods' => $periods
         ]);
     }
  
