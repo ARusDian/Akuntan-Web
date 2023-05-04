@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Period;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PeriodController extends Controller
 {
@@ -14,7 +15,9 @@ class PeriodController extends Controller
     public function index()
     {
         //
-        
+        $period = Period::all();
+        return Inertia::render('Admin/Period/Index', [
+            'period' => $period
     }
 
     /**
@@ -23,6 +26,8 @@ class PeriodController extends Controller
     public function create()
     {
         //
+        return Inertia::render('Admin/Period/Create', [
+        ]);
     }
 
     /**
@@ -31,6 +36,20 @@ class PeriodController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'start' => 'required|date_format:|unique:periods,start',
+            'end' => 'required|date_format:Y-m-d',
+            'is_active' => 'required|boolean'
+        ]);
+
+        Account::create([
+            'start' => $request->start,
+            'end' => $request->end,
+            'is_active' => $request->is_active,
+        ]);
+
+        return redirect()->route('period.index')->banner('Period created.');
+
     }
 
     /**
@@ -47,6 +66,11 @@ class PeriodController extends Controller
     public function edit(Period $period)
     {
         //
+        $period = Period::find($period->id);
+        return Inertia::render('Admin/Period/Edit', [
+            'period' => $period
+        ]);
+
     }
 
     /**
@@ -55,6 +79,19 @@ class PeriodController extends Controller
     public function update(Request $request, Period $period)
     {
         //
+        $request->validate([
+            'start' => 'required|date_format:',
+            'end' => 'required|date_format:',
+            'is_active' => 'required|boolean'
+        ]);
+        $period = Period::find($period->id);
+        $period->update([
+            'start' => $request->start,
+            'end' => $request->end,
+            'is_active' => $request->is_active
+         ]);
+
+        return redirect()->route('period.index')->banner('Period updated.');
     }
 
     /**
@@ -63,5 +100,10 @@ class PeriodController extends Controller
     public function destroy(Period $period)
     {
         //
+        $period = period::find($period->id);
+        $period->delete();
+
+        return redirect()->route('period.index')->banner('Period deleted');
     }
 }
+ 

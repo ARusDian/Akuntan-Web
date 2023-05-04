@@ -14,7 +14,10 @@ class SubAccountController extends Controller
     public function index()
     {
         //
-        
+        $subAccount = SubAccount::all();
+        return Inertia::render('Admin/SubAccount/Index', [
+            'subAccount' => $subAccount
+        ])
     }
 
     /**
@@ -23,6 +26,8 @@ class SubAccountController extends Controller
     public function create()
     {
         //
+        return Inertia::render('Admin/SubAccount/Create', [
+        ]);
     }
 
     /**
@@ -31,6 +36,17 @@ class SubAccountController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'id' => 'required|string|size:4|unique:subaccount',
+            'name' => 'required|string|max:255',
+        ]);
+
+        SubAccount::create([
+            'id' => $request->id,
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('subaccount.index')->banner('Sub-account created.');
     }
 
     /**
@@ -47,6 +63,10 @@ class SubAccountController extends Controller
     public function edit(SubAccount $subAccount)
     {
         //
+        $subAccount = SubAccount::find($id);
+        return Inertia::render('Admin/SubAccount/Edit', [
+            'subAccount' => $subAccount
+        ]);
     }
 
     /**
@@ -55,6 +75,17 @@ class SubAccountController extends Controller
     public function update(Request $request, SubAccount $subAccount)
     {
         //
+        $request->validate([
+            'id' => 'required|string|size:4|unique:subaccounts,id'
+            'subAccount' => 'required'
+        ]);
+        $subAccount = SubAccount::find($id);
+        $subAccount->update([
+            'id' => $request->id,
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('subaccount.index')->banner('Sub-account updated.');
     }
 
     /**
@@ -63,5 +94,9 @@ class SubAccountController extends Controller
     public function destroy(SubAccount $subAccount)
     {
         //
+        $subAccount = SubAccount::find($id);
+        $subAccount->delete();
+
+        return redirect()->route('subaccount.index')->banner('Sub-account deleted');
     }
 }
