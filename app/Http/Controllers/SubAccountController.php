@@ -16,17 +16,10 @@ class SubAccountController extends Controller
     public function index()
     {
         //
-<<<<<<< HEAD
-        $subAccount = SubAccount::all();
-        return Inertia::render('Admin/SubAccount/Index', [
-            'subAccount' => $subAccount
-        ])
-=======
         $subAccounts = SubAccount::with('account')->get();
         return Inertia::render('Admin/SubAccount/Index', [
             'subAccounts' => $subAccounts
         ]);
->>>>>>> 8c8f59000a66e302438fcedfb9c33528d29bd742
     }
 
     /**
@@ -35,13 +28,9 @@ class SubAccountController extends Controller
     public function create()
     {
         //
-<<<<<<< HEAD
-        return Inertia::render('Admin/SubAccount/Create', [
-=======
         $accounts = Account::all();
         return Inertia::render('Admin/SubAccount/Create', [
             'accounts' => $accounts
->>>>>>> 8c8f59000a66e302438fcedfb9c33528d29bd742
         ]);
     }
 
@@ -52,29 +41,18 @@ class SubAccountController extends Controller
     {
         //
         $request->validate([
-<<<<<<< HEAD
-            'id' => 'required|string|size:4|unique:subaccount',
-            'name' => 'required|string|max:255',
-=======
             'id' => 'required|string|size:4|unique:accounts|unique:sub_accounts',
             'name' => 'required|string|max:255',
             'account_id' => 'required|exists:accounts,id',
->>>>>>> 8c8f59000a66e302438fcedfb9c33528d29bd742
         ]);
 
         SubAccount::create([
             'id' => $request->id,
             'name' => $request->name,
-<<<<<<< HEAD
-        ]);
-
-        return redirect()->route('subaccount.index')->banner('Sub-account created.');
-=======
             'account_id' => $request->account_id,
         ]);
 
         return redirect()->route('subaccount.index')->banner('Sub Account created.');
->>>>>>> 8c8f59000a66e302438fcedfb9c33528d29bd742
     }
 
     /**
@@ -91,15 +69,10 @@ class SubAccountController extends Controller
   public function edit($id)
     {
         //
-<<<<<<< HEAD
-        $subAccount = SubAccount::find($id);
-        return Inertia::render('Admin/SubAccount/Edit', [
-=======
         $accounts = Account::all();
         $subAccount = SubAccount::find($id);
         return Inertia::render('Admin/SubAccount/Edit', [
             'accounts' => $accounts,
->>>>>>> 8c8f59000a66e302438fcedfb9c33528d29bd742
             'subAccount' => $subAccount
         ]);
     }
@@ -110,19 +83,6 @@ class SubAccountController extends Controller
     public function update(Request $request, $id)
     {
         //
-<<<<<<< HEAD
-        $request->validate([
-            'id' => 'required|string|size:4|unique:subaccounts,id'
-            'subAccount' => 'required'
-        ]);
-        $subAccount = SubAccount::find($id);
-        $subAccount->update([
-            'id' => $request->id,
-            'name' => $request->name,
-        ]);
-
-        return redirect()->route('subaccount.index')->banner('Sub-account updated.');
-=======
 
 
         $request->validate([
@@ -141,7 +101,6 @@ class SubAccountController extends Controller
 
 
         return redirect()->route('subaccount.index')->banner('Sub Account updated.');
->>>>>>> 8c8f59000a66e302438fcedfb9c33528d29bd742
     }
 
     /**
@@ -150,17 +109,10 @@ class SubAccountController extends Controller
     public function destroy($id)
     {
         //
-<<<<<<< HEAD
-        $subAccount = SubAccount::find($id);
-        $subAccount->delete();
-
-        return redirect()->route('subaccount.index')->banner('Sub-account deleted');
-=======
         
         $subAccount = SubAccount::find($id);
         $subAccount->delete();
 
         return redirect()->route('subaccount.index')->banner('Sub Account deleted.');
->>>>>>> 8c8f59000a66e302438fcedfb9c33528d29bd742
     }
 }
