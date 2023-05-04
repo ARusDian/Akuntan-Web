@@ -1,12 +1,12 @@
 <?php
-
+ 
 namespace App\Http\Controllers;
-
+ 
 use App\Models\Period;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
+ 
 class PeriodController extends Controller
 {
     /**
@@ -18,8 +18,9 @@ class PeriodController extends Controller
         $period = Period::all();
         return Inertia::render('Admin/Period/Index', [
             'period' => $period
+        ]);
     }
-
+ 
     /**
      * Show the form for creating a new resource.
      */
@@ -29,7 +30,7 @@ class PeriodController extends Controller
         return Inertia::render('Admin/Period/Create', [
         ]);
     }
-
+ 
     /**
      * Store a newly created resource in storage.
      */
@@ -37,21 +38,21 @@ class PeriodController extends Controller
     {
         //
         $request->validate([
-            'start' => 'required|date_format:|unique:periods,start',
-            'end' => 'required|date_format:Y-m-d',
+            'start' => 'required|date_format:Y-m-d|before:end',
+            'end' => 'required|date_format:Y-m-d|after:start',
             'is_active' => 'required|boolean'
         ]);
 
-        Account::create([
+        Period::create([
             'start' => $request->start,
             'end' => $request->end,
             'is_active' => $request->is_active,
         ]);
-
+ 
         return redirect()->route('period.index')->banner('Period created.');
-
+ 
     }
-
+ 
     /**
      * Display the specified resource.
      */
@@ -59,50 +60,50 @@ class PeriodController extends Controller
     {
         //
     }
-
+ 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Period $period)
+    public function edit($id)
     {
         //
-        $period = Period::find($period->id);
+        $period = Period::find($id);
         return Inertia::render('Admin/Period/Edit', [
             'period' => $period
         ]);
-
+ 
     }
-
+ 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Period $period)
+    public function update(Request $request, $id)
     {
         //
-        $request->validate([
-            'start' => 'required|date_format:',
-            'end' => 'required|date_format:',
+         $request->validate([
+            'start' => 'required|date_format:Y-m-d|before:end',
+            'end' => 'required|date_format:Y-m-d|after:start',
             'is_active' => 'required|boolean'
         ]);
-        $period = Period::find($period->id);
+        $period = Period::find($id);
         $period->update([
             'start' => $request->start,
             'end' => $request->end,
             'is_active' => $request->is_active
          ]);
-
+ 
         return redirect()->route('period.index')->banner('Period updated.');
     }
-
+ 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Period $period)
+    public function destroy($id)
     {
         //
-        $period = period::find($period->id);
+        $period = Period::find($id);
         $period->delete();
-
+ 
         return redirect()->route('period.index')->banner('Period deleted');
     }
 }

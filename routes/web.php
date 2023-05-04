@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\SubAccountController;
+use App\Http\Controllers\PeriodController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,6 +32,7 @@ Route::get('/', function () {
 
 Route::resource('/account', AccountController::class);
 Route::resource('/subaccount', SubAccountController::class);
+Route::resource('/period', PeriodController::class);
 
 Route::middleware([
     'auth:sanctum',
