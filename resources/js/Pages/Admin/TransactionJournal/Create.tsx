@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import route from 'ziggy-js';
 
 import AppLayout from '@/Layouts/DashboardAdminLayout';
@@ -7,6 +7,7 @@ import { SubAccount } from '@/Models/SubAccount';
 import { Period } from '@/Models/Period';
 import { BaseTransactionJournal, createDefaultTransactionJournalDetail } from '@/Models/TransactionJournal';
 import Form from './Form/Form';
+import { Dialog, DialogContent } from '@mui/material';
 
 interface Props {
     subAccounts: SubAccount[];
@@ -19,20 +20,30 @@ export default function Create(props: Props) {
             description: '',
             date: '',
             period_id: 0,
-            transaction_journal_details: [{
-                type: 'debit',
-                amount: 0,
-                transaction_journal_id: 0,
-                sub_account_id: ''
-            }],
+            transaction_journal_details: [createDefaultTransactionJournalDetail()],
         },
     );
 
+    const [balance, setBalance] = React.useState(0);
+    const [modalOpen, setModalOpen] = React.useState(false);
+
     function onSubmit(e: React.FormEvent) {
-        console.log(form.errors);
-        console.log(form.data);
         e.preventDefault();
         form.clearErrors();
+        let totalDebit = 0;
+        let totalCredit = 0;
+        form.data.transaction_journal_details.forEach((detail) => {
+            if (detail.type === 'debit') {
+                totalDebit += detail.amount;
+            } else {
+                totalCredit += detail.amount;
+            }
+        });
+        setBalance(totalDebit - totalCredit);
+        if (totalDebit !== totalCredit) {
+            setModalOpen(true);
+            return;
+        }
         form.post(route('transaction-journal.store'), {
             onError: (errors) => {
                 console.log(errors);
@@ -75,6 +86,18 @@ export default function Create(props: Props) {
                     </form>
                 </div>
             </div>
+            <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
+                <DialogContent className="">
+                    <div className='p-8'>
+                        <div className="text-xl font-semibold text-red-500">
+                            Debit dan Kredit tidak seimbang !
+                        </div>
+                        <div className="text-lg font-semibold text-center">
+                            Balance : <span className="text-red-500">{balance}</span>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </AppLayout>
     )
 }

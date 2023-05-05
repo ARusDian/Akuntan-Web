@@ -7,6 +7,7 @@ import { SubAccount } from '@/Models/SubAccount';
 import Form from './Form/Form';
 import { Period } from '@/Models/Period';
 import { BaseTransactionJournal, TransactionJournal } from '@/Models/TransactionJournal';
+import { Dialog, DialogContent } from '@mui/material';
 
 interface Props {
     subAccounts: SubAccount[];
@@ -19,10 +20,26 @@ export default function Edit(props: Props) {
         props.transactionJournal
     );
 
+    const [balance, setBalance] = React.useState(0);
+    const [modalOpen, setModalOpen] = React.useState(false);
+
     function onSubmit(e: React.FormEvent) {
-        console.log(form.data);
         e.preventDefault();
         form.clearErrors();
+        let totalDebit = 0;
+        let totalCredit = 0;
+        form.data.transaction_journal_details.forEach((detail) => {
+            if (detail.type === 'debit') {
+                totalDebit += detail.amount;
+            } else {
+                totalCredit += detail.amount;
+            }
+        });
+        setBalance(totalDebit - totalCredit);
+        if (totalDebit !== totalCredit) {
+            setModalOpen(true);
+            return;
+        }
         // php does'nt support PUT so...
         // @ts-ignore
         form.data._method = 'PUT';
@@ -68,6 +85,18 @@ export default function Edit(props: Props) {
                     </form>
                 </div>
             </div>
+            <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
+                <DialogContent className="">
+                    <div className='p-8'>
+                        <div className="text-xl font-semibold text-red-500">
+                            Debit dan Kredit tidak seimbang !
+                        </div>
+                        <div className="text-lg font-semibold text-center">
+                            Balance : <span className="text-red-500">{balance}</span>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </AppLayout>
     )
 }
