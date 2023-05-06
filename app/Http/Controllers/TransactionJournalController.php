@@ -19,7 +19,7 @@ class TransactionJournalController extends Controller
     public function index()
     {
         //
-        $transactionJournals = TransactionJournal::with(['period', 'transactionJournalDetails.subAccount'])->get();
+        $transactionJournals = TransactionJournal::with(['period'])->get();
         return Inertia::render('Admin/TransactionJournal/Index', [
             'transactionJournals' => $transactionJournals
         ]);
@@ -80,7 +80,6 @@ class TransactionJournalController extends Controller
     {
         //
         $transactionJournal = TransactionJournal::with(['period', 'transactionJournalDetails.subAccount'])->find($id);
-        dd($transactionJournal);
         return Inertia::render('Admin/TransactionJournal/Show', [
             'transactionJournal' => $transactionJournal
         ]);

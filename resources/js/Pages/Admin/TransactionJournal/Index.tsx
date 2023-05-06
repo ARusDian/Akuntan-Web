@@ -17,14 +17,14 @@ export default function Index(props: Props) {
 
     const dataColumns = [
         {
-            accessorKey: 'type',
-            header: 'Tipe Transaksi',   
+            accessorFn: (row) => row.period?.start + ' - ' + row.period?.end,
+            header: 'Periode Transaksi',   
         },{
             accessorKey: 'description',
             header: 'Deskripsi',
         }, {
-            accessorKey: 'sub_account.name',
-            header: 'Nama Sub Akun',
+            accessorKey: 'date',
+            header: 'Tanggal',
         },
     ] as MRT_ColumnDef<TransactionJournal>[];
 
@@ -61,22 +61,10 @@ export default function Index(props: Props) {
                                     muiTableBodyRowProps={{ hover: false }}
                                     renderRowActions={({ row }) => (
                                         <div className="flex items-center justify-center gap-2">
-                                            <InertiaLink href={route('transaction-journal.edit', row.original.id)}
-                                                className="bg-yellow-500 text-white hover:bg-yellow-600 py-3 px-5 rounded-lg text-md font-semibold">
-                                                Edit
+                                            <InertiaLink href={route('transaction-journal.show', row.original.id)}
+                                                className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold">
+                                                Show
                                             </InertiaLink>
-                                            <button
-                                                className="bg-red-500 text-white hover:bg-red-600 py-3 px-5 rounded-lg text-md font-semibold"
-                                                onClick={
-                                                    () => {
-                                                        Inertia.post(route('transaction-journal.destroy', row.original.id), {
-                                                            _method: 'DELETE',
-                                                        });
-                                                    }
-                                                }
-                                            >
-                                                Hapus
-                                            </button>
                                         </div>
                                     )}
                                 />
