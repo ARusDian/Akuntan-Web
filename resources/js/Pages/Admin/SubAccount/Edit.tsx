@@ -52,6 +52,25 @@ export default function Create(props: Props) {
                     </div>
                     <form className={`flex-col gap-5`}>
                         <div className="form-control w-full mt-4">
+                            <InputLabel htmlFor="account_id">Id Akun Induk</InputLabel>
+                            <select
+                                id="account_id"
+                                className="mt-1 block w-full"
+                                value={form.data.account_id}
+                                onChange={e => form.setData('account_id', e.currentTarget.value)}
+                                required
+                                autoFocus
+                                autoComplete="token"
+                            >
+                                <option value="">Pilih Akun Induk</option>
+                                {props.accounts.map((account) => (
+                                    <option key={account.id} value={account.id}>{account.id} - {account.name}</option>
+                                ))}
+
+                            </select>
+                            <InputError className="mt-2" message={form.errors.account_id} />
+                        </div>
+                        <div className="form-control w-full mt-4">
                             <InputLabel htmlFor="id">Id Sub Akun</InputLabel>
                             <TextInput
                                 id="id"
@@ -78,25 +97,6 @@ export default function Create(props: Props) {
                                 autoComplete="token"
                             />
                             <InputError className="mt-2" message={form.errors.name} />
-                        </div>
-                        <div className="form-control w-full mt-4">
-                            <InputLabel htmlFor="account_id">Id Akun Induk</InputLabel>
-                            <select
-                                id="account_id"
-                                className="mt-1 block w-full"
-                                value={form.data.account_id}
-                                onChange={e => form.setData('account_id', e.currentTarget.value)}
-                                required
-                                autoFocus
-                                autoComplete="token"
-                            >
-                                <option value="">Pilih Akun Induk</option>
-                                {props.accounts.map((account) => (
-                                    <option key={account.id} value={account.id}>{account.id} - {account.name}</option>
-                                ))}
-
-                            </select>
-                            <InputError className="mt-2" message={form.errors.account_id} />
                         </div>
                         <div className="flex justify-end">
                             <button
