@@ -1,4 +1,16 @@
-## This Project Use Laravel 10.8
+# This Project Use Laravel 10.8
+
+## To Initiate The Project
+- composer i
+- npm i
+- php artisan migrate
+- php artisan key:generate
+- php artisan db:seed
+## To Start The Project
+- php artisan serve
+- npm run build
+- *for development run "npm run dev" on seperate terminal with same root directory*
+- *for linux, use "sudo" when doing "npm run build / npm run dev" command*
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
