@@ -68,10 +68,27 @@ export default function DashboardAdminLayout({
                     </ResponsiveNavLink>
                 </li>
                 <li>
-                    <ResponsiveNavLink href={route('dashboard')}
-                        // active={route().current('dashboard')}
+                    <ResponsiveNavLink href={route('account.index')} active={route().current('account.index')}
                     >
-                        History Transaksi
+                        Account
+                    </ResponsiveNavLink>
+                </li>
+                <li>
+                    <ResponsiveNavLink href={route('subaccount.index')} active={route().current('subaccount.index')}
+                    >
+                        Sub-Account
+                    </ResponsiveNavLink>
+                </li>
+                <li>
+                    <ResponsiveNavLink href={route('period.index')} active={route().current('period.index')}
+                    >
+                        Period
+                    </ResponsiveNavLink>
+                </li>
+                <li>
+                    <ResponsiveNavLink href={route('transaction-journal.index')} active={route().current('transaction-journal.index')}
+                    >
+                        Transaction Journal
                     </ResponsiveNavLink>
                 </li>
             </ul>
@@ -86,7 +103,7 @@ export default function DashboardAdminLayout({
                     <button className="text-3xl md:ml-20 bg-blue-400 text-white hover:bg-blue-600 px-3 py-2"
                         onClick={toggleDrawer(true)}
                     >
-                        <MenuIcon fontSize="large" /> Admin
+                        <MenuIcon fontSize="large" /> Dashboard
                     </button>
                 </div>
                 <div className="mr-3 relative">
