@@ -36,7 +36,7 @@ export default function Index(props: Props) {
                         <div className="p-6 sm:px-20 bg-white border-b border-gray-200">
                             <div className="flex justify-between">
                                 <div className="mt-8 text-2xl">
-                                    Sub Akun
+                                    Jurnal Transaksi
                                 </div>
                                 <div className="">
                                     <InertiaLink
