@@ -91,6 +91,12 @@ export default function DashboardAdminLayout({
                         Transaction Journal
                     </ResponsiveNavLink>
                 </li>
+                <li>
+                    <ResponsiveNavLink href={route('period-transaction-journals')} active={route().current('period-transaction-journals')}
+                    >
+                        Transaction Journal By Period
+                    </ResponsiveNavLink>
+                </li>
             </ul>
         </Box>
     );

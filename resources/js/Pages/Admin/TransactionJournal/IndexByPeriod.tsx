@@ -31,7 +31,6 @@ interface TransactionJournalbyPeriods {
 export default function IndexByPeriod(props: Props) {
     const periods = props.periods;
     
-
     const marketTable = React.useRef(null);
 
     const [selectedPeriodState, setSelectedPeriodState] = useState<Period | null>(null);
@@ -43,7 +42,6 @@ export default function IndexByPeriod(props: Props) {
             axios.get(route('period-transaction-journals-byPeriod', selectedPeriodState), {
             }).then((response) => {
                 setTransactionJournals(response.data.data);
-                console.log(response.data.data);
             }).catch((error) => {
                 console.log(error);
 
