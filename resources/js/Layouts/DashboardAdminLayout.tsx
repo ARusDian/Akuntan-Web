@@ -97,6 +97,12 @@ export default function DashboardAdminLayout({
                         Transaction Journal By Period
                     </ResponsiveNavLink>
                 </li>
+                <li>
+                    <ResponsiveNavLink href={route('date-subaccount-transactions')} active={route().current('date-subaccount-transactions')}
+                    >
+                        Neraca Saldo
+                    </ResponsiveNavLink>
+                </li>
             </ul>
         </Box>
     );
