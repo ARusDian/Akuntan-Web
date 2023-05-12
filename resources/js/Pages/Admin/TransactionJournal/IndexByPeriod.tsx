@@ -170,14 +170,14 @@ export default function IndexByPeriod(props: Props) {
                                     <thead>
                                         <tr className='border-b py-3 border-black'>
                                             <th className='' rowSpan={2}>Tanggal</th>
-                                            <th className='' rowSpan={2}>Keterangan</th>
-                                            <th className='' colSpan={3}>Debit</th>
+                                            <th className='border-r border-black' rowSpan={2}>Keterangan</th>
+                                            <th className='border-r border-black' colSpan={3}>Debit</th>
                                             <th className='' colSpan={3}>Kredit</th>
                                         </tr>
-                                        <tr>
+                                        <tr className='border-b py-3 border-black'>
                                             <th className=''>Kode Sub Akun</th>
                                             <th className=''>Sub Akun</th>
-                                            <th className=''>Jumlah</th>
+                                            <th className='border-r border-black'>Jumlah</th>
                                             <th className=''>Kode Sub Akun</th>
                                             <th className=''>Sub Akun</th>
                                             <th className=''>Jumlah</th>
@@ -190,22 +190,22 @@ export default function IndexByPeriod(props: Props) {
                                                 <>
                                                     <tr className='border-b py-3 border-black'>
                                                         <td className='' rowSpan={maxLength}>{transactionJournal.transaction_journal.date}</td>
-                                                        <td className='' rowSpan={maxLength}>{transactionJournal.transaction_journal.description}</td>
-                                                        <td className=''>{transactionJournal.debit_details[0].id_subaccount}</td>
-                                                        <td className=''>{transactionJournal.debit_details[0].subaccount}</td>
-                                                        <td className=''>{transactionJournal.debit_details[0].amount}</td>
-                                                        <td className=''>{transactionJournal.credit_details[0].id_subaccount}</td>
-                                                        <td className=''>{transactionJournal.credit_details[0].subaccount}</td>
-                                                        <td className=''>{transactionJournal.credit_details[0].amount}</td>
+                                                        <td className='border-r border-black' rowSpan={maxLength}>{transactionJournal.transaction_journal.description}</td>
+                                                        <td className='text-center'>{transactionJournal.debit_details[0].id_subaccount}</td>
+                                                        <td className='text-center'>{transactionJournal.debit_details[0].subaccount}</td>
+                                                        <td className='text-center border-r border-black'>{transactionJournal.debit_details[0].amount}</td>
+                                                        <td className='text-center'>{transactionJournal.credit_details[0].id_subaccount}</td>
+                                                        <td className='text-center'>{transactionJournal.credit_details[0].subaccount}</td>
+                                                        <td className='text-center'>{transactionJournal.credit_details[0].amount}</td>
                                                     </tr>
                                                     {[...Array(maxLength - 1)].map((_, index) => (
                                                         <tr className='border-b py-3 border-black'>
-                                                            <td className=''>{transactionJournal.debit_details[index + 1]?.id_subaccount}</td>
-                                                            <td className=''>{transactionJournal.debit_details[index + 1]?.subaccount}</td>
-                                                            <td className=''>{transactionJournal.debit_details[index + 1]?.amount}</td>
-                                                            <td className=''>{transactionJournal.credit_details[index + 1]?.id_subaccount}</td>
-                                                            <td className=''>{transactionJournal.credit_details[index + 1]?.subaccount}</td>
-                                                            <td className=''>{transactionJournal.credit_details[index + 1]?.amount}</td>
+                                                            <td className='text-center'>{transactionJournal.debit_details[index + 1]?.id_subaccount}</td>
+                                                            <td className='text-center'>{transactionJournal.debit_details[index + 1]?.subaccount}</td>
+                                                            <td className='text-center border-r border-black'>{transactionJournal.debit_details[index + 1]?.amount}</td>
+                                                            <td className='text-center'>{transactionJournal.credit_details[index + 1]?.id_subaccount}</td>
+                                                            <td className='text-center'>{transactionJournal.credit_details[index + 1]?.subaccount}</td>
+                                                            <td className='text-center'>{transactionJournal.credit_details[index + 1]?.amount}</td>
                                                         </tr>
                                                     ))}
                                                 </>
