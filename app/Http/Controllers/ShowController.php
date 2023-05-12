@@ -67,61 +67,31 @@ class ShowController extends Controller
         $startDate = $request->start;
         $endDate = $request->end;
         $transactionJournalsWithDetailsByDate = TransactionJournal::with(['period', 'transactionJournalDetails.subAccount'])->whereBetween('date', [$startDate, $endDate])->get();
-        $transactionJournalsWithDetails = [];
         $subAccountsSumByDate = [];
         foreach($transactionJournalsWithDetailsByDate as $transaction){
-            $arrDebitDetails = [];
-            $arrCreditDetails = [];
             foreach($transaction->transactionJournalDetails as $detail){
                 if($detail->type == 'debit'){
-                    // $arrDebitDetails[] = $detail;
-                    array_push($arrDebitDetails, [
-                        'id_subaccount' => $detail->subAccount->id,
-                        'subaccount' => $detail->subAccount->name,
-                        'amount' => $detail->amount,
-                        'type' => 'debit'
-                    ]);
+                    if(array_key_exists($detail->subAccount->id, $subAccountsSumByDate)){
+                        $subAccountsSumByDate[$detail->subAccount->id]['debit'] += $detail->amount;
+                    }else{
+                        $subAccountsSumByDate[$detail->subAccount->id] = [
+                            'id' => $detail->subAccount->id,
+                            'name' => $detail->subAccount->name,
+                            'debit' => $detail->amount,
+                            'credit' => 0
+                        ];
+                    }
                 }else{
-                    array_push($arrCreditDetails, [
-                        'id_subaccount' => $detail->subAccount->id,
-                        'subaccount' => $detail->subAccount->name,
-                        'amount' => $detail->amount,
-                        'type' => 'credit'
-                    ]);
-                }
-            }
-
-            array_push($transactionJournalsWithDetails, [
-                'transaction_journal' => $transaction,
-                'debit_details' => $arrDebitDetails,
-                'credit_details' => $arrCreditDetails
-            ]);
-        }   
-
-        foreach($transactionJournalsWithDetails as $transaction){
-            foreach($transaction['debit_details'] as $detail){
-                if(array_key_exists($detail['id_subaccount'], $subAccountsSumByDate)){
-                    $subAccountsSumByDate[$detail['id_subaccount']]['debit'] += $detail['amount'];
-                }else{
-                    $subAccountsSumByDate[$detail['id_subaccount']] = [
-                        'id' => $detail['id_subaccount'], 
-                        'subaccount' => $detail['subaccount'],
-                        'debit' => $detail['amount'],
-                        'credit' => 0
-                    ];
-                }
-            }
-
-            foreach($transaction['credit_details'] as $detail){
-                if(array_key_exists($detail['id_subaccount'], $subAccountsSumByDate)){
-                    $subAccountsSumByDate[$detail['id_subaccount']]['credit'] += $detail['amount'];
-                }else{
-                    $subAccountsSumByDate[$detail['id_subaccount']] = [
-                        'id' => $detail['id_subaccount'],
-                        'subaccount' => $detail['subaccount'],
-                        'debit' => 0,
-                        'credit' => $detail['amount']
-                    ];
+                    if(array_key_exists($detail->subAccount->id, $subAccountsSumByDate)){
+                        $subAccountsSumByDate[$detail->subAccount->id]['credit'] += $detail->amount;
+                    }else{
+                        $subAccountsSumByDate[$detail->subAccount->id] = [
+                            'id' => $detail->subAccount->id,
+                            'name' => $detail->subAccount->name,
+                            'debit' => 0,
+                            'credit' => $detail->amount
+                        ];
+                    }
                 }
             }
         }
