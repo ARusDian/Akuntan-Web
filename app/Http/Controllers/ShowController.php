@@ -99,13 +99,13 @@ class ShowController extends Controller
         return response()->json(['data' => $subAccountsSumByDate], 200);
     }
 
-    public function SubAccountDetailsByDateView()
+    public function SubAccountsDetailsByDateView()
     {
         return Inertia::render('Show/SubaccountWithDetailsbyDate', [
         ]);
     }
 
-     public function SubAccountDetailsByDate(Request $request)
+     public function SubAccountsDetailsByDate(Request $request)
     {
         $startDate = $request->start;
         $endDate = $request->end;
@@ -140,5 +140,43 @@ class ShowController extends Controller
         }
 
         return response()->json(['data' => $subAccountsSumByDate], 200);
+    }
+
+    public function SubAccountsTransactionsByDateView()
+    {
+        return Inertia::render('Show/SubaccountsWithTransactionsbyDate', [
+        ]);
+    }
+
+     public function SubAccountsTransactionsByDate(Request $request)
+    {
+        $startDate = $request->start;
+        $endDate = $request->end;
+        $transactionJournalsWithDetailsByDate = TransactionJournal::with(['period', 'transactionJournalDetails.subAccount'])->whereBetween('date', [$startDate, $endDate])->get();
+        $subAccountswithTransactions = [];
+        foreach($transactionJournalsWithDetailsByDate as $transaction){
+            foreach($transaction->transactionJournalDetails as $detail){
+               if(array_key_exists($detail->subAccount->id, $subAccountswithTransactions)){
+                    array_push($subAccountswithTransactions[$detail->subAccount->id]['transactions'], [
+                        'description' => $transaction->description,
+                        'date' => $transaction->date,
+                        'type' => $detail->type,
+                        'amount' => $detail->amount,
+                    ]);
+                }else{
+                    $subAccountswithTransactions[$detail->subAccount->id] = [
+                        'id' => $detail->subAccount->id,
+                        'name' => $detail->subAccount->name,
+                        'transactions' => [[
+                            'description' => $transaction->description,
+                            'date' => $transaction->date,
+                            'type' => $detail->type,
+                            'amount' => $detail->amount,
+                        ]]
+                    ];
+                }
+            }
+        }
+        return response()->json(['data' => $subAccountswithTransactions], 200);
     }
 }
