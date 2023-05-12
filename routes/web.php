@@ -37,7 +37,8 @@ Route::resource('/subaccount', SubAccountController::class);
 Route::resource('/period', PeriodController::class);
 Route::resource('/transaction-journal', TransactionJournalController::class);
 Route::get('/period-transaction-journals', [ShowController::class, 'TransactionJournalPeriodView'])->name('period-transaction-journals');
-Route::get('/date-subaccount-transactions', [ShowController::class, 'SubAccountByDateView'])->name('date-subaccount-transactions');
+Route::get('/date-subaccount-transactions', [ShowController::class, 'SubAccountsByDateView'])->name('date-subaccount-transactions');
+Route::get('/date-subaccount-details', [ShowController::class, 'SubAccountDetailsByDateView'])->name('date-subaccount-details');
 
 Route::middleware([
     'auth:sanctum',

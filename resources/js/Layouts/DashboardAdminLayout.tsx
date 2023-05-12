@@ -103,6 +103,12 @@ export default function DashboardAdminLayout({
                         Neraca Saldo
                     </ResponsiveNavLink>
                 </li>
+                <li>
+                    <ResponsiveNavLink href={route('date-subaccount-details')} active={route().current('date-subaccount-details')}
+                    >
+                        Laporan Laba Rugi
+                    </ResponsiveNavLink>
+                </li>
             </ul>
         </Box>
     );

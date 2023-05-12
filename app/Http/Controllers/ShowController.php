@@ -56,13 +56,13 @@ class ShowController extends Controller
         return response()->json(['data' => $transactionJournalsWithDetails], 200); 
     }
 
-    public function SubAccountByDateView()
+    public function SubAccountsByDateView()
     {
         return Inertia::render('Show/SubaccountbyDate', [
         ]);
     }
 
-    public function SubAccountByDate(Request $request)
+    public function SubAccountsByDate(Request $request)
     {
         $startDate = $request->start;
         $endDate = $request->end;
@@ -99,5 +99,46 @@ class ShowController extends Controller
         return response()->json(['data' => $subAccountsSumByDate], 200);
     }
 
+    public function SubAccountDetailsByDateView()
+    {
+        return Inertia::render('Show/SubaccountWithDetailsbyDate', [
+        ]);
+    }
 
+     public function SubAccountDetailsByDate(Request $request)
+    {
+        $startDate = $request->start;
+        $endDate = $request->end;
+        $transactionJournalsWithDetailsByDate = TransactionJournal::with(['period', 'transactionJournalDetails.subAccount'])->whereBetween('date', [$startDate, $endDate])->get();
+        $subAccountsSumByDate = [];
+        foreach($transactionJournalsWithDetailsByDate as $transaction){
+            foreach($transaction->transactionJournalDetails as $detail){
+                if($detail->type == 'debit'){
+                    if(array_key_exists($detail->subAccount->id, $subAccountsSumByDate)){
+                        $subAccountsSumByDate[$detail->subAccount->id]['debit'] += $detail->amount;
+                    }else{
+                        $subAccountsSumByDate[$detail->subAccount->id] = [
+                            'id' => $detail->subAccount->id,
+                            'name' => $detail->subAccount->name,
+                            'debit' => $detail->amount,
+                            'credit' => 0
+                        ];
+                    }
+                }else{
+                    if(array_key_exists($detail->subAccount->id, $subAccountsSumByDate)){
+                        $subAccountsSumByDate[$detail->subAccount->id]['credit'] += $detail->amount;
+                    }else{
+                        $subAccountsSumByDate[$detail->subAccount->id] = [
+                            'id' => $detail->subAccount->id,
+                            'name' => $detail->subAccount->name,
+                            'debit' => 0,
+                            'credit' => $detail->amount
+                        ];
+                    }
+                }
+            }
+        }
+
+        return response()->json(['data' => $subAccountsSumByDate], 200);
+    }
 }

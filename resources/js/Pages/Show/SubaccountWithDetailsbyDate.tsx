@@ -32,12 +32,12 @@ export default function Index() {
     function handleExportAll() {
         const table = subaccountTable.current;
         const wb = XLSX.utils.table_to_book(table);
-        XLSX.writeFile(wb, `NERACA SALDO-${new Date().getTime()}.xlsx`);
+        XLSX.writeFile(wb, `LAPORAN LABA RUGI-${new Date().getTime()}.xlsx`);
     }
 
     function onSubmitHandler(e: React.FormEvent) {
         e.preventDefault();
-        axios.post(route('date-subaccount-transactions-api'), {
+        axios.post(route('date-subaccount-details-api'), {
             start: form.data.start,
             end: form.data.end,
         }).then((response) => {
@@ -92,7 +92,7 @@ export default function Index() {
                             </form>
                             <div className="flex justify-between">
                                 <div className="mt-8 text-2xl">
-                                    Subakun berdasarkan tanggal (NERACA SALDO)
+                                    Detail Subakun berdasarkan tanggal (LAPORAN LABA RUGI)
                                 </div>
                                 <div className="">
                                     <button
@@ -104,31 +104,46 @@ export default function Index() {
                             </div>
                             <div className="mt-6 text-gray-500">
                                 <table className="table-auto w-full" ref={subaccountTable}>
-                                    <thead>
-                                        <tr>
-                                            <th className="px-4 py-2 border-x">Kode</th>
-                                            <th className="px-4 py-2 border-x">Akun</th>
-                                            <th className="px-4 py-2 border-x">Debit</th>
-                                            <th className="px-4 py-2 border-x">Kredit</th>
+                                    <tr>
+                                        <td className="border px-4 py-2 text-center font-bold" colSpan={2}>- Revenue (Pendapatan)</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border px-4 py-2 text-center font-bold" colSpan={2}>Akun</td>
+                                    </tr>
+                                    {subaccountbyDate.map((subaccount) => (
+                                        <tr key={subaccount.id}>
+                                            <td className="border px-4 py-2 text-center">[{subaccount.id}]{subaccount.name}</td>
+                                            <td className="border px-4 py-2 text-center">{subaccount.debit}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {subaccountbyDate.map((subaccount, index) => (
-                                            <tr key={index}>
-                                                <td className="border px-4 py-2 text-center">{subaccount.id}</td>
-                                                <td className="border px-4 py-2 text-center">{subaccount.name}</td>
-                                                <td className="border px-4 py-2 text-center">{subaccount.debit}</td>
-                                                <td className="border px-4 py-2 text-center">{subaccount.credit}</td>
-                                            </tr>
-                                        ))}
-                                        <tr>
-                                            <td className="border px-4 py-2 text-center" colSpan={2}>Total</td>
-                                            <td className="border px-4 py-2 text-center">{subaccountbyDate.reduce((a, b) => a + b.debit, 0)}</td>
-                                            <td className="border px-4 py-2 text-center">{subaccountbyDate.reduce((a, b) => a + b.credit, 0)}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
 
+                                    ))}
+                                    <tr>
+                                        <td className="border px-4 py-2 text-center font-bold">Total</td>
+                                        <td className="border px-4 py-2 text-center font-bold">{subaccountbyDate.reduce((a, b) => a + b.debit, 0)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={2}>
+                                            <br />
+                                        </td>
+                                    </tr>
+                                    <tr className='border-t-2 border-black'>
+                                        <td className="border px-4 py-2 text-center font-bold" colSpan={2}>- Expense (Pengeluaran)</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border px-4 py-2 text-center font-bold" colSpan={2}>Akun</td>
+                                    </tr>
+
+                                    {subaccountbyDate.map((subaccount) => (
+                                        <tr key={subaccount.id}>
+                                            <td className="border px-4 py-2 text-center">[{subaccount.id}]{subaccount.name}</td>
+                                            <td className="border px-4 py-2 text-center">{subaccount.credit}</td>
+                                        </tr>
+                                    ))}
+                                    <tr>
+                                        <td className="border px-4 py-2 text-center font-bold">Total</td>
+                                        <td className="border px-4 py-2 text-center font-bold">{subaccountbyDate.reduce((a, b) => a + b.credit, 0)}</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>

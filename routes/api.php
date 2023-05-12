@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('period-transaction-journals-api/{period_id}', [ShowController::class,'TransactionJournalPeriod'])->name('period-transaction-journals-api');
-Route::post('/date-subaccount-transactions-api', [ShowController::class, 'SubAccountByDate'])->name('date-subaccount-transactions-api');
+Route::post('/date-subaccount-transactions-api', [ShowController::class, 'SubAccountsByDate'])->name('date-subaccount-transactions-api');
+Route::post('/date-subaccount-details-api', [ShowController::class, 'SubAccountDetailsByDate'])->name('date-subaccount-details-api');
