@@ -37,7 +37,7 @@ export default function Index() {
 
     function onSubmitHandler(e: React.FormEvent) {
         e.preventDefault();
-        axios.post(route('date-subaccount-transactions-api'), {
+        axios.post(route('date-subaccount-api'), {
             start: form.data.start,
             end: form.data.end,
         }).then((response) => {

@@ -100,6 +100,12 @@ export default function DashboardAdminLayout({
                 <li>
                     <ResponsiveNavLink href={route('date-subaccount-transactions')} active={route().current('date-subaccount-transactions')}
                     >
+                        Buku Besar UKM
+                    </ResponsiveNavLink>
+                </li>
+                <li>
+                    <ResponsiveNavLink href={route('date-subaccount')} active={route().current('date-subaccount')}
+                    >
                         Neraca Saldo
                     </ResponsiveNavLink>
                 </li>

@@ -58,7 +58,7 @@ class ShowController extends Controller
 
     public function SubAccountsByDateView()
     {
-        return Inertia::render('Show/SubaccountbyDate', [
+        return Inertia::render('Show/SubaccountsbyDate', [
         ]);
     }
 
@@ -101,7 +101,7 @@ class ShowController extends Controller
 
     public function SubAccountsDetailsByDateView()
     {
-        return Inertia::render('Show/SubaccountWithDetailsbyDate', [
+        return Inertia::render('Show/SubaccountsWithDetailsbyDate', [
         ]);
     }
 
