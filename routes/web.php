@@ -4,6 +4,7 @@ use App\Actions\Fortify\UserProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ShowController;
 use App\Http\Controllers\SubAccountController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\TransactionJournalController;
@@ -35,7 +36,7 @@ Route::resource('/account', AccountController::class);
 Route::resource('/subaccount', SubAccountController::class);
 Route::resource('/period', PeriodController::class);
 Route::resource('/transaction-journal', TransactionJournalController::class);
-Route::get('/period-transaction-journals', [TransactionJournalController::class, 'TransactionJournalPeriodView'])->name('period-transaction-journals');
+Route::get('/period-transaction-journals', [ShowController::class, 'TransactionJournalPeriodView'])->name('period-transaction-journals');
 
 Route::middleware([
     'auth:sanctum',

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\TransactionJournalController;
+use App\Http\Controllers\ShowController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('period-transaction-journals-byPeriod/{period_id}', [TransactionJournalController::class,'TransactionJournalPeriod'])->name('period-transaction-journals-byPeriod');
+Route::get('period-transaction-journals-api/{period_id}', [ShowController::class,'TransactionJournalPeriod'])->name('period-transaction-journals-api');

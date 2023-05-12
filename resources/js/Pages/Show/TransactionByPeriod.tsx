@@ -39,7 +39,7 @@ export default function IndexByPeriod(props: Props) {
 
     useEffect(() => {
         if (selectedPeriodState) {
-            axios.get(route('period-transaction-journals-byPeriod', selectedPeriodState), {
+            axios.get(route('period-transaction-journals-api', selectedPeriodState), {
             }).then((response) => {
                 setTransactionJournals(response.data.data);
             }).catch((error) => {
@@ -56,62 +56,6 @@ export default function IndexByPeriod(props: Props) {
         const wb = XLSX.utils.table_to_book(table);
         XLSX.writeFile(wb, `Transaksi-${new Date().getTime()}.xlsx`);
     }
-
-    const dataColumns = [
-        {
-            accessorKey: 'transaction_journal.date',
-            header: 'Tanggal'
-        }, {
-            accessorKey: 'transaction_journal.description',
-            header: 'Keterangan'
-        }, {
-            id: 'credit_details',
-            header: 'Kredit',
-
-            Cell({ cell }) {
-                return (
-                    <table>
-                        <thead>
-                            <tr className='border p-3 border-black'>
-                                <th className='border p-3 border-black'>Kode Sub Akun</th>
-                                <th className='border p-3 border-black'>Sub Akun</th>
-                                <th className='border p-3 border-black'>Jumlah</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {cell.row.original.credit_details.map(
-                                (credit_detail) => (
-                                    <tr className='border p-3 border-black'>
-                                        <td className='border p-3 border-black'>{credit_detail.id_subaccount}</td>
-                                        <td className='border p-3 border-black'>{credit_detail.subaccount}</td>
-                                        <td className='border p-3 border-black'>{credit_detail.amount}</td>
-                                    </tr>
-                                )
-                            )}
-                        </tbody>
-                    </table>
-                )
-            }
-        }, {
-            id: 'debit_details',
-            header: 'Debit',
-            columns: [
-                {
-                    accessorFn: (originalRow) => originalRow.credit_details[0].id_subaccount,
-                    header: 'Kode Sub Akun'
-
-                }, ,
-                {
-                    accessorFn: (originalRow) => originalRow.debit_details[0].subaccount,
-                    header: 'Sub Akun'
-                }, {
-                    accessorFn: (originalRow) => originalRow.debit_details[0].amount,
-                    header: 'Jumlah'
-                }
-            ]
-        }
-
-    ] as MRT_ColumnDef<TransactionJournalbyPeriods>[];
 
     return (
         <AppLayout title="Account">
@@ -186,7 +130,7 @@ export default function IndexByPeriod(props: Props) {
                                             const maxLength = Math.max(transactionJournal.debit_details.length, transactionJournal.credit_details.length)
                                             return (
                                                 <>
-                                                    <tr className='border-b py-3 border-black'>
+                                                    <tr className='border-b py-3 border-black' key={transactionJournal.transaction_journal.id}>
                                                         <td className='' rowSpan={maxLength}>{transactionJournal.transaction_journal.date}</td>
                                                         <td className='border-r border-black' rowSpan={maxLength}>{transactionJournal.transaction_journal.description}</td>
                                                         <td className='text-center'>{transactionJournal.debit_details[0].id_subaccount}</td>
@@ -197,7 +141,7 @@ export default function IndexByPeriod(props: Props) {
                                                         <td className='text-center'>{transactionJournal.credit_details[0].amount}</td>
                                                     </tr>
                                                     {[...Array(maxLength - 1)].map((_, index) => (
-                                                        <tr className='border-b py-3 border-black'>
+                                                        <tr className='border-b py-3 border-black' key={index}>
                                                             <td className='text-center'>{transactionJournal.debit_details[index + 1]?.id_subaccount}</td>
                                                             <td className='text-center'>{transactionJournal.debit_details[index + 1]?.subaccount}</td>
                                                             <td className='text-center border-r border-black'>{transactionJournal.debit_details[index + 1]?.amount}</td>
