@@ -45,6 +45,7 @@
     "react-confirm-alert": "^3.0.6",
     "react-dom": "^18.2.0",
     "react-select": "^5.7.2",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.10/xlsx-0.18.10.tgz",
     "ziggy-js": "^1.5.1"
   },
   "prettier": {

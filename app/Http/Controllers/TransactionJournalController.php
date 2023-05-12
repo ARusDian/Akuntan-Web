@@ -163,4 +163,47 @@ class TransactionJournalController extends Controller
         return redirect()->route('transaction-journal.index')->banner('Transaction Journal Deleted Successfully');
         });
     }
+
+    public function TransactionJournalPeriodView()
+    {
+        $periods = Period::all();
+        return Inertia::render('Admin/TransactionJournal/IndexByPeriod', [
+            'periods' => $periods 
+        ]);
+    }
+
+    public function TransactionJournalPeriod(Request $request)
+    {
+        $transactionJournals = TransactionJournal::with(['period', 'transactionJournalDetails.subAccount'])->where('period_id', 1)->get();
+        $transactionJournalsWithDetails = [];
+        foreach($transactionJournals as $transaction){
+            $arrDebitDetails = [];
+            $arrCreditDetails = [];
+            foreach($transaction->transactionJournalDetails as $detail){
+                if($detail->type == 'debit'){
+                    // $arrDebitDetails[] = $detail;
+                    array_push($arrDebitDetails, [
+                        'id_subaccount' => $detail->subAccount->id,
+                        'subaccount' => $detail->subAccount->name,
+                        'amount' => $detail->amount,
+                        'type' => 'debit'
+                    ]);
+                }else{
+                    array_push($arrCreditDetails, [
+                        'id_subaccount' => $detail->subAccount->id,
+                        'subaccount' => $detail->subAccount->name,
+                        'amount' => $detail->amount,
+                        'type' => 'credit'
+                    ]);
+                }
+            }
+
+            array_push($transactionJournalsWithDetails, [
+                'transaction_journal' => $transaction,
+                'debit_details' => $arrDebitDetails,
+                'credit_details' => $arrCreditDetails
+            ]);
+        }
+        return response()->json(['data' => $transactionJournalsWithDetails], 200); 
+    }
 }
