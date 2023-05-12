@@ -117,9 +117,9 @@ export default function Index() {
                                         </tr>
 
                                     ))}
-                                    <tr>
-                                        <td className="border px-4 py-2 text-center font-bold">Total</td>
-                                        <td className="border px-4 py-2 text-center font-bold">{subaccountbyDate.reduce((a, b) => a + b.debit, 0)}</td>
+                                    <tr className='font-bold'>
+                                        <td className="border px-4 py-2 text-center">Total</td>
+                                        <td className="border px-4 py-2 text-center">{subaccountbyDate.reduce((a, b) => a + b.debit, 0)}</td>
                                     </tr>
                                     <tr>
                                         <td colSpan={2}>
@@ -139,9 +139,9 @@ export default function Index() {
                                             <td className="border px-4 py-2 text-center">{subaccount.credit}</td>
                                         </tr>
                                     ))}
-                                    <tr>
-                                        <td className="border px-4 py-2 text-center font-bold">Total</td>
-                                        <td className="border px-4 py-2 text-center font-bold">{subaccountbyDate.reduce((a, b) => a + b.credit, 0)}</td>
+                                    <tr className='font-bold'>
+                                        <td className="border px-4 py-2 text-center">Total</td>
+                                        <td className="border px-4 py-2 text-center">{subaccountbyDate.reduce((a, b) => a + b.credit, 0)}</td>
                                     </tr>
                                 </table>
                             </div>
