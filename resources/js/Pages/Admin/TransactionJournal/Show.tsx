@@ -94,6 +94,7 @@ export default function Show(props: Props) {
 									<thead>
 										<tr className='border-b py-3 border-black'>
 											<th className=''>Tipe</th>
+											<th className=''>Kategori</th>
 											<th className=''>Jumlah</th>
 											<th className=''>Akun</th>
 										</tr>
@@ -102,6 +103,7 @@ export default function Show(props: Props) {
 										{transactionJournal.transaction_journal_details?.map((detail, index) => (
 											<tr className='border-b py-3 border-black' key={index}>
 												<td className={`py-3 text-center font-semibold	 ${detail.type=='debit' ? 'text-red-500' : 'text-blue-500'}` }>{detail.type}</td>
+												<td className='py-3 text-center'>{detail.category}</td>
 												<td className='py-3 text-center'>{detail.amount}</td>
 												<td className='py-3 text-center'>{detail.sub_account?.name}</td>
 											</tr>

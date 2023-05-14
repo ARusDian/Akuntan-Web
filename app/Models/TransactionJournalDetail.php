@@ -13,6 +13,7 @@ class TransactionJournalDetail extends Model
         'transaction_journal_id',
         'sub_account_id',
         'type',
+        'category',
         'amount',
     ];
 

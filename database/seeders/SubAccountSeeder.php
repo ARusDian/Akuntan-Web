@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Subaccount;
+use App\Models\SubAccount;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SubaccountSeeder extends Seeder
+class SubAccountSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class SubaccountSeeder extends Seeder
     public function run(): void
     {
         //
-        $subaccounts =[
+        $subAccounts =[
             [
                 'id' => '1110',
                 'name' => 'Kas',
@@ -197,10 +197,10 @@ class SubaccountSeeder extends Seeder
                 'account_id'=>'7'
             ],
         ];
-        foreach($subaccounts as $subaccount){
-            Subaccount::updateOrCreate([
-                'id' => $subaccount['id']
-            ], $subaccount);
+        foreach($subAccounts as $subAccount){
+            SubAccount::updateOrCreate([
+                'id' => $subAccount['id']
+            ], $subAccount);
         }
 
     }

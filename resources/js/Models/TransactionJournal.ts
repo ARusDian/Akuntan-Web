@@ -18,6 +18,7 @@ export interface BaseTransactionJournalDetail{
     id?: number;
     type: 'debit' | 'credit';
     amount: number;
+    category: TransactionJournalDetailCategory;
     transaction_journal_id: number;
     transactionJournal?: TransactionJournal;
     sub_account_id: string;
@@ -32,7 +33,16 @@ export function createDefaultTransactionJournalDetail() : BaseTransactionJournal
     return {
         type: 'debit',
         amount: 0,
+        category: TransactionJournalDetailCategory['CURRENT ASSET'],
         transaction_journal_id: 0,
         sub_account_id: ''
     }
+}
+
+export enum TransactionJournalDetailCategory { 
+    'CURRENT ASSET',
+    'FIXED ASSET',
+    'LIABILITY',
+    'LIABILITY OTHER',
+    'EQUITY'
 }
