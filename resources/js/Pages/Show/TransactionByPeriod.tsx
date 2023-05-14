@@ -1,10 +1,9 @@
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React, { useEffect, useState } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 
 import AppLayout from '@/Layouts/DashboardAdminLayout';
 
-import { TransactionJournal } from '@/Models/TransactionJournal';
+import { TransactionJournal, TransactionJournalDetailCategory } from '@/Models/TransactionJournal';
 import { Period } from '@/Models/Period';
 import axios from 'axios';
 import route from 'ziggy-js';
@@ -19,7 +18,7 @@ interface TransactionJournalDetail {
     subaccount: string,
     amount: number,
     type: 'credit' | 'debit',
-
+    category: TransactionJournalDetailCategory,
 }
 
 interface TransactionJournalbyPeriods {
@@ -113,15 +112,17 @@ export default function IndexByPeriod(props: Props) {
                                         <tr className='border-b py-3 border-black'>
                                             <th className='' rowSpan={2}>Tanggal</th>
                                             <th className='border-r border-black' rowSpan={2}>Keterangan</th>
-                                            <th className='border-r border-black' colSpan={3}>Debit</th>
-                                            <th className='' colSpan={3}>Kredit</th>
+                                            <th className='border-r border-black' colSpan={4}>Debit</th>
+                                            <th className='' colSpan={4}>Kredit</th>
                                         </tr>
                                         <tr className='border-b py-3 border-black'>
                                             <th className=''>Kode Sub Akun</th>
                                             <th className=''>Sub Akun</th>
+                                            <th className=''>Kategori</th>
                                             <th className='border-r border-black'>Jumlah</th>
                                             <th className=''>Kode Sub Akun</th>
                                             <th className=''>Sub Akun</th>
+                                            <th className=''>Kategori</th>
                                             <th className=''>Jumlah</th>
                                         </tr>
                                     </thead>
@@ -131,22 +132,26 @@ export default function IndexByPeriod(props: Props) {
                                             return (
                                                 <>
                                                     <tr className='border-b py-3 border-black' key={transactionJournal.transaction_journal.id}>
-                                                        <td className='' rowSpan={maxLength}>{transactionJournal.transaction_journal.date}</td>
-                                                        <td className='border-r border-black' rowSpan={maxLength}>{transactionJournal.transaction_journal.description}</td>
+                                                        <td className='text-center' rowSpan={maxLength}>{transactionJournal.transaction_journal.date}</td>
+                                                        <td className='border-r border-black text-center' rowSpan={maxLength}>{transactionJournal.transaction_journal.description}</td>
                                                         <td className='text-center'>{transactionJournal.debit_details[0].id_subaccount}</td>
                                                         <td className='text-center'>{transactionJournal.debit_details[0].subaccount}</td>
+                                                        <td className='text-center'>{transactionJournal.debit_details[0].category}</td>
                                                         <td className='text-center border-r border-black'>{transactionJournal.debit_details[0].amount}</td>
                                                         <td className='text-center'>{transactionJournal.credit_details[0].id_subaccount}</td>
                                                         <td className='text-center'>{transactionJournal.credit_details[0].subaccount}</td>
+                                                        <td className='text-center'>{transactionJournal.credit_details[0].category}</td>
                                                         <td className='text-center'>{transactionJournal.credit_details[0].amount}</td>
                                                     </tr>
                                                     {[...Array(maxLength - 1)].map((_, index) => (
                                                         <tr className='border-b py-3 border-black' key={index}>
                                                             <td className='text-center'>{transactionJournal.debit_details[index + 1]?.id_subaccount}</td>
                                                             <td className='text-center'>{transactionJournal.debit_details[index + 1]?.subaccount}</td>
+                                                            <td className='text-center'>{transactionJournal.debit_details[0].category}</td>
                                                             <td className='text-center border-r border-black'>{transactionJournal.debit_details[index + 1]?.amount}</td>
                                                             <td className='text-center'>{transactionJournal.credit_details[index + 1]?.id_subaccount}</td>
                                                             <td className='text-center'>{transactionJournal.credit_details[index + 1]?.subaccount}</td>
+                                                            <td className='text-center'>{transactionJournal.credit_details[index + 1].category}</td>
                                                             <td className='text-center'>{transactionJournal.credit_details[index + 1]?.amount}</td>
                                                         </tr>
                                                     ))}

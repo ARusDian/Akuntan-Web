@@ -21,9 +21,9 @@ class ShowController extends Controller
         ]);
     }
 
-    public function TransactionJournalPeriod(Request $request)
+    public function TransactionJournalPeriod(Request $request, $period_id)
     {
-        $transactionJournals = TransactionJournal::with(['period', 'transactionJournalDetails.subAccount'])->where('period_id', 1)->get();
+        $transactionJournals = TransactionJournal::with(['period', 'transactionJournalDetails.subAccount'])->where('period_id', $period_id)->get();
         $transactionJournalsWithDetails = [];
         foreach($transactionJournals as $transaction){
             $arrDebitDetails = [];
@@ -35,6 +35,7 @@ class ShowController extends Controller
                         'id_subaccount' => $detail->subAccount->id,
                         'subaccount' => $detail->subAccount->name,
                         'amount' => $detail->amount,
+                        'category' => $detail->category,
                         'type' => 'debit'
                     ]);
                 }else{
@@ -42,11 +43,11 @@ class ShowController extends Controller
                         'id_subaccount' => $detail->subAccount->id,
                         'subaccount' => $detail->subAccount->name,
                         'amount' => $detail->amount,
+                        'category' => $detail->category,
                         'type' => 'credit'
                     ]);
                 }
             }
-
             array_push($transactionJournalsWithDetails, [
                 'transaction_journal' => $transaction,
                 'debit_details' => $arrDebitDetails,
