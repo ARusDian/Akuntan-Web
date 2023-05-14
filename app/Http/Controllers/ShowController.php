@@ -8,6 +8,7 @@ use App\Models\SubAccount;
 use App\Models\TransactionJournal;
 use App\Models\TransactionJournalDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ShowController extends Controller
@@ -149,7 +150,7 @@ class ShowController extends Controller
         ]);
     }
 
-     public function SubAccountsTransactionsByDate(Request $request)
+    public function SubAccountsTransactionsByDate(Request $request)
     {
         $startDate = $request->start;
         $endDate = $request->end;
@@ -179,5 +180,78 @@ class ShowController extends Controller
             }
         }
         return response()->json(['data' => $subAccountswithTransactions], 200);
+    }
+
+    public function SubaccountsCategorybyDateView()
+    {
+        return Inertia::render('Show/SubaccountsCategorybyDate', [
+        ]);
+    }
+
+    public function SubaccountsCategorybyDate(Request $request)
+    {
+        $startDate = $request->start;
+        $endDate = $request->end;
+        $transactionJournalDetailsByDate = TransactionJournalDetail::with(['subAccount'])->whereHas('transactionJournal', function($q) use ($startDate, $endDate){
+            $q->whereBetween('date', [$startDate, $endDate]);
+        })->get();
+
+        $transactionJournalDetailsGroupByCategory = [];
+        foreach($transactionJournalDetailsByDate as $detail){
+            if(array_key_exists($detail->category, $transactionJournalDetailsGroupByCategory)){
+                if(array_key_exists($detail->subAccount->id, $transactionJournalDetailsGroupByCategory[$detail->category])){
+                    if($detail->type == 'debit'){
+                        $transactionJournalDetailsGroupByCategory[$detail->category][$detail->subAccount->id]['debit'] += $detail->amount;
+                    }else{
+                        $transactionJournalDetailsGroupByCategory[$detail->category][$detail->subAccount->id]['credit'] += $detail->amount;
+                    }
+                }else{
+                    if($detail->type == 'debit'){
+                        $transactionJournalDetailsGroupByCategory[$detail->category][$detail->subAccount->id] = [
+                            'id' => $detail->subAccount->id,
+                            'subaccount' => $detail->subAccount->name,
+                            'category' => $detail->category,
+                            'debit' => $detail->amount,
+                            'credit' => 0
+                        ];
+                    }else{
+                        $transactionJournalDetailsGroupByCategory[$detail->category][$detail->subAccount->id] = [
+                            'id' => $detail->subAccount->id,
+                            'subaccount' => $detail->subAccount->name,
+                            'category' => $detail->category,
+                            'debit' => 0,
+                            'credit' => $detail->amount
+                        ];
+                    }
+                }
+            }else{
+                if(array_key_exists($detail->subAccount->id, $transactionJournalDetailsGroupByCategory)){
+                    if($detail->type == 'debit'){
+                        $transactionJournalDetailsGroupByCategory[$detail->category][$detail->subAccount->id]['debit'] += $detail->amount;
+                    }else{
+                        $transactionJournalDetailsGroupByCategory[$detail->category][$detail->subAccount->id]['credit'] += $detail->amount;
+                    }
+                }else{
+                    if($detail->type == 'debit'){
+                        $transactionJournalDetailsGroupByCategory[$detail->category][$detail->subAccount->id] = [
+                            'id' => $detail->subAccount->id,
+                            'subaccount' => $detail->subAccount->name,
+                            'category' => $detail->category,
+                            'debit' => $detail->amount,
+                            'credit' => 0
+                        ];
+                    }else{
+                        $transactionJournalDetailsGroupByCategory[$detail->category][$detail->subAccount->id] = [
+                            'id' => $detail->subAccount->id,
+                            'subaccount' => $detail->subAccount->name,
+                            'category' => $detail->category,
+                            'debit' => 0,
+                            'credit' => $detail->amount
+                        ];
+                    } 
+                }
+            }
+        }        
+        return response()->json(['data' => $transactionJournalDetailsGroupByCategory], 200);
     }
 }

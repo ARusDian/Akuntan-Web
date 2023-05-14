@@ -110,6 +110,12 @@ export default function DashboardAdminLayout({
                     </ResponsiveNavLink>
                 </li>
                 <li>
+                    <ResponsiveNavLink href={route('date-subaccount-category')} active={route().current('date-subaccount-category')}
+                    >
+                        Neraca Keuangan
+                    </ResponsiveNavLink>
+                </li>
+                <li>
                     <ResponsiveNavLink href={route('date-subaccount-details')} active={route().current('date-subaccount-details')}
                     >
                         Laporan Laba Rugi
