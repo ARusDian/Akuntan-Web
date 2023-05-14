@@ -6,7 +6,7 @@ import { InertiaLink, useForm } from '@inertiajs/inertia-react';
 import InputError from '@/Components/Jetstream/InputError';
 import TextInput from '@/Components/Jetstream/TextInput';
 import InputLabel from '@mui/material/InputLabel';
-import { BaseSubAccount } from '@/Models/SubAccount';
+import { BaseSubAccount, SubAccountCategory } from '@/Models/SubAccount';
 import { Account } from '@/Models/Account';
 
 interface Props {
@@ -19,6 +19,7 @@ export default function Create(props : Props) {
             id: '',
             name: '',
             account_id: '',
+            category: 'LIABILITY' as unknown as SubAccountCategory,
         }
     );
 
@@ -98,7 +99,23 @@ export default function Create(props : Props) {
                             />
                             <InputError className="mt-2" message={form.errors.name} />
                         </div>
-                        
+                        <div className="form-control w-full mt-4">
+                            <InputLabel htmlFor="type">Kategori Transaksi</InputLabel>
+                            <select
+                                className="mt-1 block w-full"
+                                value={form.data.category}
+                                onChange={e => {
+                                    form.setData('category', e.currentTarget.value as unknown as SubAccountCategory)
+                                }}
+                                aria-label="Platform"
+                            >
+                                <option value="CURRENT ASSET">CURRENT ASSET</option>
+                                <option value="FIXED ASSET">FIXED ASSET</option>
+                                <option value="LIABILITY">LIABILITY</option>
+                                <option value="LIABILITY OTHER">LIABILITY OTHER</option>
+                                <option value="EQUITY">EQUITY</option>
+                            </select>
+                        </div>
                         <div className="flex justify-end">
                             <button
                                 className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold m-5 mt-10 w-1/2"

@@ -9,7 +9,6 @@ import InputLabel from '@/Components/Jetstream/InputLabel';
 import InputError from '@/Components/Jetstream/InputError';
 import Input from '@/Components/Jetstream/Input';
 import axios from 'axios';
-import { TransactionJournalDetailCategory } from '@/Models/TransactionJournal';
 
 interface SubaccountGroupByCategory {
     [categoryKey: string]: 

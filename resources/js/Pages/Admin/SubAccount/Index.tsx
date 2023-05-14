@@ -24,7 +24,10 @@ export default function Index(props: Props) {
         }, {
             accessorKey: 'account.name',
             header: 'Nama Akun',
-        },
+        }, {
+            accessorKey: 'category',
+            header: 'Kategori Sub AKun',
+        }
     ] as MRT_ColumnDef<SubAccount>[];
     return (
         <AppLayout title="Account">

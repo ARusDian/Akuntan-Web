@@ -2,7 +2,7 @@ import React from 'react';
 
 import AddNewHeader from '@/Components/AddNewHeader';
 import { InertiaFormProps } from '@inertiajs/inertia-react';
-import { BaseTransactionJournal, BaseTransactionJournalDetail, TransactionJournalDetailCategory, createDefaultTransactionJournalDetail } from '@/Models/TransactionJournal';
+import { BaseTransactionJournal, BaseTransactionJournalDetail, createDefaultTransactionJournalDetail } from '@/Models/TransactionJournal';
 import { SubAccount } from '@/Models/SubAccount';
 import TextInput from '@/Components/Jetstream/TextInput';
 import { InputLabel, ToggleButtonGroup, ToggleButton } from '@mui/material';
@@ -79,23 +79,6 @@ export default function DetailForm(props: Props) {
                                         />
                                     </div>
                                     <div className="form-control w-full mt-4">
-                                        <InputLabel htmlFor="type">Kategori Transaksi</InputLabel>
-                                        <select
-                                            className="mt-1 block w-full"
-                                            value={form.data.transaction_journal_details[index].category}
-                                            onChange={handleChange((e) => {
-                                                transactionJournalDetails[index].category = e.currentTarget.value as unknown as TransactionJournalDetailCategory;
-                                            })}
-                                            aria-label="Platform"
-                                        >
-                                            <option value="CURRENT ASSET">CURRENT ASSET</option>
-                                            <option value="FIXED ASSET">FIXED ASSET</option>
-                                            <option value="LIABILITY">LIABILITY</option>
-                                            <option value="LIABILITY OTHER">LIABILITY OTHER</option>
-                                            <option value="EQUITY">EQUITY</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-control w-full mt-4">
                                         <InputLabel htmlFor="type">Tipe Transaksi</InputLabel>
                                         <ToggleButtonGroup
                                             color="primary"
@@ -110,8 +93,6 @@ export default function DetailForm(props: Props) {
                                             <ToggleButton value="debit">Debit</ToggleButton>
                                             <ToggleButton value="credit">Kredit</ToggleButton>
                                         </ToggleButtonGroup>
-                                    </div>
-                                    <div>
                                     </div>
                                     <div className="flex justify-center">
                                         <button

@@ -16,13 +16,6 @@ return new class extends Migration
             $table->foreignId('transaction_journal_id')->constrained('transaction_journals');
             $table->string('sub_account_id')->references('id')->on('sub_accounts')->onUpdate('restrict')->onDelete('restrict');
             $table->enum('type', ['debit', 'credit']);
-            $table->enum('category', [
-                'CURRENT ASSET', 
-                'FIXED ASSET', 
-                'LIABILITY',
-                'LIABILITY OTHER',
-                'EQUITY',
-            ]);
             $table->bigInteger('amount');
             $table->timestamps();
         });

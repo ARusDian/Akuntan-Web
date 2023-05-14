@@ -15,6 +15,7 @@ class SubAccount extends Model
     protected $fillable = [
         'id',
         'name',
+        'category',
         'account_id',
     ];
 

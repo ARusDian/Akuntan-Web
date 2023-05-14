@@ -16,7 +16,7 @@ class SubAccountController extends Controller
     public function index()
     {
         //
-        $subAccounts = SubAccount::with('account')->get();
+        $subAccounts = SubAccount::with('account')->get()->sortBy('id')->values();
         return Inertia::render('Admin/SubAccount/Index', [
             'subAccounts' => $subAccounts
         ]);
@@ -44,12 +44,14 @@ class SubAccountController extends Controller
             'id' => 'required|string|size:4|unique:accounts|unique:sub_accounts',
             'name' => 'required|string|max:255',
             'account_id' => 'required|exists:accounts,id',
+            'category' => 'required|in:CURRENT ASSET,FIXED ASSET,LIABILITY,LIABILITY OTHER,EQUITY',
         ]);
 
         SubAccount::create([
             'id' => $request->id,
             'name' => $request->name,
             'account_id' => $request->account_id,
+            'category' => $request->category,
         ]);
 
         return redirect()->route('subaccount.index')->banner('Sub Account created.');
@@ -89,6 +91,8 @@ class SubAccountController extends Controller
             'id' => 'required|string|size:4|unique:accounts|unique:sub_accounts,id,' . $id,
             'name' => 'required|string|max:255',
             'account_id' => 'required|exists:accounts,id',
+            'category' => 'required|in:CURRENT ASSET,FIXED ASSET,LIABILITY,LIABILITY OTHER,EQUITY',
+
         ]);
 
         $subAccount = SubAccount::find($id);
@@ -97,6 +101,7 @@ class SubAccountController extends Controller
             'id' => $request->id,
             'name' => $request->name,
             'account_id' => $request->account_id,
+            'category' => $request->category,
         ]);
 
 

@@ -32,7 +32,7 @@ class TransactionJournalController extends Controller
     {
         //
         $periods = Period::all();
-        $subAccounts = SubAccount::all();
+        $subAccounts = SubAccount::all()->sortBy('id')->values();;
         return Inertia::render('Admin/TransactionJournal/Create', [
             'periods' => $periods,
             'subAccounts' => $subAccounts
@@ -52,7 +52,6 @@ class TransactionJournalController extends Controller
             'transaction_journal_details.*.sub_account_id' => 'required|exists:sub_accounts,id|integer',
             'transaction_journal_details.*.amount' => 'required|numeric',
             'transaction_journal_details.*.type' => 'required|in:debit,credit',
-            'transaction_journal_details.*.category' => 'required|in:CURRENT ASSET,FIXED ASSET,LIABILITY,LIABILITY OTHER,EQUITY',
         ]);
         return DB::transaction(function () use ($request) {
             $transactionJournal = TransactionJournal::create([
@@ -67,7 +66,6 @@ class TransactionJournalController extends Controller
                     'sub_account_id' => $detail['sub_account_id'],
                     'amount' => $detail['amount'],
                     'type' => $detail['type'],
-                    'category' => $detail['category'],
                 ]);
             }
             
@@ -94,7 +92,7 @@ class TransactionJournalController extends Controller
     {
         //
         $periods = Period::all();
-        $subAccounts = SubAccount::all();
+        $subAccounts = SubAccount::all()->sortBy('id')->values();
         $transactionJournal = TransactionJournal::with(['period', 'transactionJournalDetails.subAccount'])->find($id);
         // dd($transactionJournal);    
         return Inertia::render('Admin/TransactionJournal/Edit', [
@@ -117,7 +115,6 @@ class TransactionJournalController extends Controller
             'transaction_journal_details.*.sub_account_id' => 'required|exists:sub_accounts,id|integer',
             'transaction_journal_details.*.amount' => 'required|numeric',
             'transaction_journal_details.*.type' => 'required|in:debit,credit',
-            'transaction_journal_details.*.category' => 'required|in:CURRENT ASSET,FIXED ASSET,LIABILITY,LIABILITY OTHER,EQUITY',
         ]);
 
 
@@ -144,7 +141,6 @@ class TransactionJournalController extends Controller
                     'sub_account_id' => $detail['sub_account_id'],
                     'amount' => $detail['amount'],
                     'type' => $detail['type'],
-                    'category' => $detail['category'],
                 ]);
             }
             
