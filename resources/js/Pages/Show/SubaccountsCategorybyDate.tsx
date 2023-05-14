@@ -57,8 +57,6 @@ export default function Index() {
         });
     }
 
-    console.log(SubaccountGroupByCategory);
-
     return (
         <AppLayout title="Account">
             <div className="py-12">
