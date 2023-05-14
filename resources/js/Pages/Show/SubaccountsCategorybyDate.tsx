@@ -139,12 +139,14 @@ export default function Index() {
                                                 <tr>
                                                     <th className="px-4 py-2 border-x" colSpan={2}>Total</th>
                                                     <th className="px-4 py-2 border-x">{subaccountGroup &&
-                                                        Object.values(subaccountGroup).reduce((acc, subaccount) => acc + subaccount.debit, 0)}</th>
+                                                        Object.values(subaccountGroup).reduce((acc, subaccount) => acc + subaccount.debit, 0)}
+                                                    </th>
                                                     <th className="px-4 py-2 border-x">{subaccountGroup &&
-                                                        Object.values(subaccountGroup).reduce((acc, subaccount) => acc + subaccount.credit, 0)}</th>
+                                                        Object.values(subaccountGroup).reduce((acc, subaccount) => acc + subaccount.credit, 0)}
+                                                    </th>
                                                 </tr>
                                                 <tr>
-                                                    <th className="px-4 py-2 border-x" colSpan={2}>Seluruh</th>
+                                                    <th className="px-4 py-2 border-x" colSpan={2}>Seluruh {categoryKey}</th>
                                                     <th className="px-4 py-2 border-x" colSpan={2}>{subaccountGroup &&
                                                         Object.values(subaccountGroup).reduce((acc, subaccount) =>
                                                             acc + subaccount.debit, 0) -
