@@ -9,6 +9,7 @@ import InputLabel from '@/Components/Jetstream/InputLabel';
 import InputError from '@/Components/Jetstream/InputError';
 import Input from '@/Components/Jetstream/Input';
 import axios from 'axios';
+import { Switch, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 interface SubaccountbyDate {
     id: string,
@@ -20,6 +21,8 @@ interface SubaccountbyDate {
 
 export default function Index() {
     const subaccountTable = React.useRef(null);
+
+    const [feeZakatState, setFeeZakatState] = React.useState<boolean>(false);
 
     const [subaccountbyDate, setSubaccountbyDate] = React.useState<SubaccountbyDate[]>([]);
     const form = useForm(
@@ -45,7 +48,13 @@ export default function Index() {
         }).catch((error) => {
             console.log(error);
         });
-    }
+    };
+
+    const brutoRevenue = subaccountbyDate.reduce((a, b) => a + b.debit, 0);
+    const pph = (brutoRevenue * 0.05);
+    const brutoRevenueWithPph = brutoRevenue - pph;
+    const zakat = (brutoRevenueWithPph * 0.025);
+    const netProfit = brutoRevenueWithPph - zakat;
 
     return (
         <AppLayout title="Account">
@@ -102,10 +111,21 @@ export default function Index() {
                                     </button>
                                 </div>
                             </div>
+                            <div className='my-3'>
+                                <InputLabel htmlFor="type">Dengan atau tanpa Pajak dan Zakat</InputLabel>
+                                <Switch {...{
+                                    inputProps: { 'aria-label': 'Dengan atau tanpa Pajak dan Zakat' },
+                                }}
+                                    onChange={() => {
+                                        setFeeZakatState(!feeZakatState);
+                                    }}
+                                    
+                                />
+                            </div>
                             <div className="mt-6 text-gray-500">
                                 <table className="table-auto w-full" ref={subaccountTable}>
                                     <tr>
-                                        <td className="border px-4 py-2 text-center font-bold" colSpan={2}>- Revenue (Pendapatan)</td>
+                                        <td className="border px-4 py-2 text-center font-bold" colSpan={2}>+ Revenue (Pendapatan/Omzet)</td>
                                     </tr>
                                     <tr>
                                         <td className="border px-4 py-2 text-center font-bold" colSpan={2}>Akun</td>
@@ -119,8 +139,20 @@ export default function Index() {
                                     ))}
                                     <tr className='font-bold'>
                                         <td className="border px-4 py-2 text-center">Total</td>
-                                        <td className="border px-4 py-2 text-center">{subaccountbyDate.reduce((a, b) => a + b.debit, 0)}</td>
+                                        <td className="border px-4 py-2 text-center">{brutoRevenue}</td>
                                     </tr>
+                                    {feeZakatState && (
+                                        <>
+                                            <tr className='font-bold'>
+                                                <td className="border px-4 py-2 text-center">Total Setelah pajak - {pph }</td>
+                                                <td className="border px-4 py-2 text-center">{brutoRevenueWithPph}</td>
+                                            </tr>
+                                            <tr className='font-bold'>
+                                                <td className="border px-4 py-2 text-center">Total Setelah Zakat - {zakat }</td>
+                                                <td className="border px-4 py-2 text-center">{netProfit}</td>
+                                            </tr>
+                                        </>
+                                    )}
                                     <tr>
                                         <td colSpan={2}>
                                             <br />
@@ -149,7 +181,7 @@ export default function Index() {
                                         </td>
                                     </tr>
                                     <tr className='font-bold bg-green-300'>
-                                        <td className="border px-4 py-2 text-center">Total Net Lost/Profit</td>
+                                        <td className="border px-4 py-2 text-center">Total Net</td>
                                         <td className="border px-4 py-2 text-center">
                                             {
                                                 subaccountbyDate.reduce((a, b) => a + b.credit, 0) -
@@ -157,6 +189,19 @@ export default function Index() {
                                             }
                                         </td>
                                     </tr>
+                                    <br></br>
+                                    {feeZakatState && (
+                                        <tr className='font-bold bg-green-300'>
+                                            <td className="border px-4 py-2 text-center">Total Net With Fee</td>
+                                            <td className="border px-4 py-2 text-center">
+                                                {
+                                                    netProfit -
+                                                    subaccountbyDate.reduce((a, b) => a + b.credit, 0) 
+                                                    
+                                                }
+                                            </td>
+                                        </tr>
+                                    )}
                                 </table>
                             </div>
                         </div>
